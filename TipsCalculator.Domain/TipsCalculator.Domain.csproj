@@ -40,9 +40,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\IRatesService.cs" />
     <Compile Include="Interfaces\ITipsService.cs" />
+    <Compile Include="Interfaces\ITransactionsService.cs" />
+    <Compile Include="Services\RatesService.cs" />
     <Compile Include="Services\TipsService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\TransactionsService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TipsCalculator.Entities\TipsCalculator.Entities.csproj">
+      <Project>{DDC74516-CD70-44A1-8058-776F03B80FB3}</Project>
+      <Name>TipsCalculator.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TipsCalculator.Infrastructure\TipsCalculator.Infrastructure.csproj">
+      <Project>{9DE380B8-06C3-49BB-ABAC-D960E63732E9}</Project>
+      <Name>TipsCalculator.Infrastructure</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -16,11 +16,11 @@ namespace TipsCalculator.API.Controllers
 
         [HttpGet]
         [Route("api/v1/tips")]
-        public async Task<IHttpActionResult> GetTipsCalculator()
+        public async Task<IHttpActionResult> GetTipsOrder([FromUri] string sku, [FromUri] string currency)
         {
             try
             {
-                var response = await this.tipsAppService.GetTipsCalculatorAdapter().ConfigureAwait(false);
+                var response = await this.tipsAppService.GetTipsOrderAdapter(sku, currency).ConfigureAwait(false);
                 return this.Ok(response);
             }
             catch (Exception e)

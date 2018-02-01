@@ -4,6 +4,6 @@ namespace TipsCalculator.Application.Interfaces
 {
     public interface ITipsAppService
     {
-        Task<dynamic> GetTipsCalculatorAdapter();
+        Task<dynamic> GetTipsOrderAdapter(string sku, string currency);
     }
 }

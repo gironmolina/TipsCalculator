@@ -1,8 +1,12 @@
 using System;
 using TipsCalculator.Application.Interfaces;
 using TipsCalculator.Application.Services;
+using TipsCalculator.CrossCutting.Helpers;
+using TipsCalculator.CrossCutting.Interfaces;
 using TipsCalculator.Domain.Interfaces;
 using TipsCalculator.Domain.Services;
+using TipsCalculator.Infrastructure.Interfaces;
+using TipsCalculator.Infrastructure.Repositories;
 using Unity;
 
 namespace TipsCalculator
@@ -32,6 +36,13 @@ namespace TipsCalculator
 
             // Domain Services
             container.RegisterType<ITipsService, TipsService>();
+
+            // Repositories
+            container.RegisterType<ITransactionsRepository, TransactionsRepository>();
+            container.RegisterType<IRatesRepository, RatesRepository>();
+
+            // Cross-cutting
+            container.RegisterType<IAppConfigSettings, AppConfigSettings>();
         }
     }
 }
