@@ -36,6 +36,7 @@ namespace TipsCalculator
 
             // Domain Services
             container.RegisterType<ITipsService, TipsService>();
+            container.RegisterType<ICurrencyService, CurrencyService>();
 
             // Repositories
             container.RegisterType<ITransactionsRepository, TransactionsRepository>();

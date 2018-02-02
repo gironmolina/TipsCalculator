@@ -6,6 +6,6 @@ namespace TipsCalculator.Infrastructure.Interfaces
 {
     public interface IRatesRepository
     {
-        Task<IEnumerable<RateEntity>> GetRates();
+        Task<IList<RateEntity>> GetRates();
     }
 }

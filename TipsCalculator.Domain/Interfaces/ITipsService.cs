@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using TipsCalculator.CrossCutting.Enums;
 
 namespace TipsCalculator.Domain.Interfaces
 {

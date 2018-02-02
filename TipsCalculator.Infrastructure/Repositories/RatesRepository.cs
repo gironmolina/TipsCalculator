@@ -17,9 +17,9 @@ namespace TipsCalculator.Infrastructure.Repositories
             this.appConfigSettings = appConfigSettings ?? throw new ArgumentNullException(nameof(appConfigSettings));
         }
 
-        public async Task<IEnumerable<RateEntity>> GetRates()
+        public async Task<IList<RateEntity>> GetRates()
         {
-            var rates = await HttpClientHelpers.GetAsync<IEnumerable<RateEntity>>(appConfigSettings.RatesApiUrl)
+            var rates = await HttpClientHelpers.GetAsync<IList<RateEntity>>(appConfigSettings.RatesApiUrl)
                 .ConfigureAwait(false);
             return rates;
         }

@@ -19,17 +19,21 @@ namespace TipsCalculator.Infrastructure.Repositories
         }
 
 
-        public async Task<IEnumerable<TransactionEntity>> GetTransactions()
+        public async Task<IList<TransactionEntity>> GetTransactions()
         {
-            var transactions = await HttpClientHelpers.GetAsync<IEnumerable<TransactionEntity>>(appConfigSettings.TransactionApiUrl)
+            var transactions = await HttpClientHelpers.GetAsync<IList<TransactionEntity>>(appConfigSettings.TransactionApiUrl)
                 .ConfigureAwait(false);
             return transactions;
         }
 
-        public async Task<IEnumerable<TransactionEntity>> GetTransactionsBySku(string sku)
+        public async Task<IList<TransactionEntity>> GetTransactionsBySku(string sku)
         {
             var transactions = await GetTransactions();
-            var transactionsBySku = transactions.Where(t => t.Sku == sku);
+
+            var asd = transactions.First().Sku;
+            var transactionsBySku = transactions.Where(t => t.Sku == asd).ToList();
+
+            //var transactionsBySku = transactions.Where(t => t.Sku == sku).ToList();
             return transactionsBySku;
         }
     }

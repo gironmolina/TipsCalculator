@@ -46,9 +46,11 @@
   <ItemGroup>
     <Compile Include="Dtos\RateDto.cs" />
     <Compile Include="Dtos\TransactionDto.cs" />
+    <Compile Include="Interfaces\ICurrencyAppService.cs" />
     <Compile Include="Interfaces\IRatesAppService.cs" />
     <Compile Include="Interfaces\ITipsAppService.cs" />
     <Compile Include="Interfaces\ITransactionsAppService.cs" />
+    <Compile Include="Services\CurrencyAppService.cs" />
     <Compile Include="Services\RatesAppService.cs" />
     <Compile Include="Services\TipsAppService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -58,6 +60,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TipsCalculator.CrossCutting\TipsCalculator.CrossCutting.csproj">
+      <Project>{91404FA9-0910-4DB4-8922-20754A9FD316}</Project>
+      <Name>TipsCalculator.CrossCutting</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TipsCalculator.Domain\TipsCalculator.Domain.csproj">
       <Project>{8E347797-1904-4009-98CC-9D031320F4E2}</Project>
       <Name>TipsCalculator.Domain</Name>

@@ -6,8 +6,8 @@ namespace TipsCalculator.Infrastructure.Interfaces
 {
     public interface ITransactionsRepository
     {
-        Task<IEnumerable<TransactionEntity>> GetTransactions();
+        Task<IList<TransactionEntity>> GetTransactions();
 
-        Task<IEnumerable<TransactionEntity>> GetTransactionsBySku(string sku);
+        Task<IList<TransactionEntity>> GetTransactionsBySku(string sku);
     }
 }

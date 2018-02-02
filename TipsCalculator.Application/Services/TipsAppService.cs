@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using AutoMapper;
 using TipsCalculator.Application.Interfaces;
 using TipsCalculator.Domain.Interfaces;
 
@@ -18,7 +17,6 @@ namespace TipsCalculator.Application.Services
         public async Task<dynamic> GetTipsOrderAdapter(string sku, string currency)
         {
             var result = await this.tipsService.GetTipsOrder(sku, currency);
-            //return Mapper.Map<SchedulerWeekDto>(schedulerEntity);
             return result;
         }
     }

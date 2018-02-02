@@ -42,6 +42,8 @@
   <ItemGroup>
     <Compile Include="RateEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TipsOrder.cs" />
+    <Compile Include="TipsTransaction.cs" />
     <Compile Include="TransactionEntity.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
