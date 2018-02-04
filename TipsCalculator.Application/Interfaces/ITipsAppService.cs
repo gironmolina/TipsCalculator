@@ -1,9 +1,10 @@
 ﻿using System.Threading.Tasks;
+using TipsCalculator.Application.Dtos;
 
 namespace TipsCalculator.Application.Interfaces
 {
     public interface ITipsAppService
     {
-        Task<dynamic> GetTipsOrderAdapter(string sku, string currency);
+        Task<TipsOrderDto> GetTipsOrderAdapter(string sku, string currency);
     }
 }

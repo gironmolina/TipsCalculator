@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TipsCalculator.CrossCutting.Enums;
@@ -14,6 +13,7 @@ namespace TipsCalculator.Domain.Services
         private readonly ICurrencyService currencyService;
         private readonly ITransactionsRepository transactionsRepository;
         private readonly IRatesRepository ratesRepository;
+        private const decimal TIP_PORCENTAGE = (decimal) 0.05;
 
         public TipsService(
             ICurrencyService currencyService,
@@ -21,36 +21,33 @@ namespace TipsCalculator.Domain.Services
             IRatesRepository ratesRepository)
         {
             this.currencyService = currencyService ?? throw new ArgumentNullException(nameof(currencyService));
-
             this.transactionsRepository = transactionsRepository ?? throw new ArgumentNullException(nameof(transactionsRepository));
             this.ratesRepository = ratesRepository ?? throw new ArgumentNullException(nameof(ratesRepository));
         }
 
-        public async Task<dynamic> GetTipsOrder(string sku, string currency)
+        public async Task<TipsOrderEntity> GetTipsOrder(string sku, string currency)
         {
-            var transactions = await transactionsRepository.GetTransactionsBySku(sku);
+            var transactions = await transactionsRepository.GetTransactionsBySku(sku).ConfigureAwait(false);
             if (!transactions.Any())
             {
                 return null;
             }
 
-            var rates = await ratesRepository.GetRates();
+            var rates = await ratesRepository.GetRates().ConfigureAwait(false);
             var transactionsResult = currencyService.Convert(currency, transactions, rates);
 
-            var tipsTransactions = transactionsResult.Select(transactionEntity => new TipsTransaction
+            var tipsTransactions = transactionsResult.Select(transactionEntity => new TipsTransactionEntity
                 {
                     Sku = transactionEntity.Sku,
-                    Amount = transactionEntity.Amount,
+                    Amount = Math.Round(transactionEntity.Amount, 2),
                     Currency = transactionEntity.Currency,
-                    Tip = transactionEntity.Amount * (decimal) 0.05
-                })
-                .ToList();
+                    Tip = Math.Round(transactionEntity.Amount * TIP_PORCENTAGE, 2)
+            }).ToList();
 
-
-            var result = new TipsOrder
+            var result = new TipsOrderEntity
             {
                 Currency = Currencies.Euro,
-                TotalTipAmount = transactionsResult.Sum(t => t.Amount),
+                TotalTipAmount = Math.Round(transactionsResult.Sum(t => t.Amount) * TIP_PORCENTAGE, 2),
                 Transactions = tipsTransactions
             };
 

@@ -2,12 +2,12 @@
 
 namespace TipsCalculator.Entities
 {
-    public class TipsOrder
+    public class TipsOrderEntity
     {
         public string Currency { get; set; }
 
         public decimal TotalTipAmount { get; set; }
 
-        public IEnumerable<TipsTransaction> Transactions { get; set; } = new List<TipsTransaction>();
+        public IEnumerable<TipsTransactionEntity> Transactions { get; set; } = new List<TipsTransactionEntity>();
     }
 }

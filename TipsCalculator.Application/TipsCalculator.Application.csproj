@@ -45,6 +45,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dtos\RateDto.cs" />
+    <Compile Include="Dtos\TipsOrderDto.cs" />
+    <Compile Include="Dtos\TipsTransactionDto.cs" />
     <Compile Include="Dtos\TransactionDto.cs" />
     <Compile Include="Interfaces\ICurrencyAppService.cs" />
     <Compile Include="Interfaces\IRatesAppService.cs" />
@@ -67,6 +69,10 @@
     <ProjectReference Include="..\TipsCalculator.Domain\TipsCalculator.Domain.csproj">
       <Project>{8E347797-1904-4009-98CC-9D031320F4E2}</Project>
       <Name>TipsCalculator.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TipsCalculator.Entities\TipsCalculator.Entities.csproj">
+      <Project>{DDC74516-CD70-44A1-8058-776F03B80FB3}</Project>
+      <Name>TipsCalculator.Entities</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

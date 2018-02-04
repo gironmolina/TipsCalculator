@@ -1,39 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
+using TipsCalculator.Application.Interfaces;
 
 namespace TipsCalculator.API.Controllers
 {
     public class TransactionsController : ApiController
     {
-        // GET api/<controller>
-        public IEnumerable<string> Get()
+        private readonly ITransactionsAppService transactionAppService;
+
+        public TransactionsController(ITransactionsAppService transactionAppService)
         {
-            return new string[] { "value1", "value2" };
+            this.transactionAppService = transactionAppService ?? throw new ArgumentNullException(nameof(transactionAppService));
         }
 
-        // GET api/<controller>/5
-        public string Get(int id)
+        [HttpGet]
+        [Route("api/v1/transactions")]
+        public async Task<IHttpActionResult> GetTransactions()
         {
-            return "value";
-        }
-
-        // POST api/<controller>
-        public void Post([FromBody]string value)
-        {
-        }
-
-        // PUT api/<controller>/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/<controller>/5
-        public void Delete(int id)
-        {
+            try
+            {
+                var response = await this.transactionAppService.GetTransactionAdapter().ConfigureAwait(false);
+                return this.Ok(response);
+            }
+            catch (Exception e)
+            {
+                return this.InternalServerError(e);
+            }
         }
     }
 }

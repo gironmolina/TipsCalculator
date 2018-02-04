@@ -7,15 +7,9 @@ namespace TipsCalculator.Domain.Services
 {
     public class CurrencyService : ICurrencyService
     {
-        public IEnumerable<TransactionEntity> Convert(string currency, IEnumerable<TransactionEntity> transactions, IList<RateEntity> rates)
+        public IList<TransactionEntity> Convert(string currency, IEnumerable<TransactionEntity> transactions, IList<RateEntity> rates)
         {
-            var transactionEntities = new List<TransactionEntity>();
-            foreach (var transaction in transactions)
-            {
-                var convertion = Convert(currency, transaction, rates);
-                transactionEntities.Add(convertion);
-            }
-            return transactionEntities;
+            return transactions.Select(transaction => Convert(currency, transaction, rates)).ToList();
         }
 
         public TransactionEntity Convert(string currency, TransactionEntity transaction, IList<RateEntity> rates)
@@ -25,13 +19,7 @@ namespace TipsCalculator.Domain.Services
                 return transaction;
             }
 
-            var rate = GetCurrencyConversionRate(transaction.Currency, currency, rates);
-
-            //TODO: Throw bussines exception ?? what to do when there is no rate?
-            if (rate == null)
-            {
-                return null;
-            }
+            var rate = GetRate(transaction.Currency, currency, rates);
 
             return new TransactionEntity
             {
@@ -41,35 +29,59 @@ namespace TipsCalculator.Domain.Services
             };
         }
 
-        private RateEntity GetCurrencyConversionRate(string fromCurrency, string toCurrency, IList<RateEntity> rates)
+        private RateEntity GetRate(string fromCurrency, string toCurrency, IList<RateEntity> rates)
         {
-            var rate = rates.FirstOrDefault(r => r.From == fromCurrency && 
-                                                 r.To == toCurrency);
+            // Try to find the conversation
+            var rateConvertion = rates.FirstOrDefault(rate => rate.From == fromCurrency && 
+                                                              rate.To == toCurrency);
 
-            if (rate != null)
+            if (rateConvertion != null)
             {
-                return rate;
+                return rateConvertion;
             }
 
-            var fromRates = rates.Where(r => r.From == fromCurrency);
+            var rateConversation = GetRateConversation(fromCurrency, toCurrency, rates);
+            var rateDescription = rateConversation.Select(i=> i.From).Aggregate((current, next) => current + " - " + next);
+            var rateValue = rateConversation.Select(i => i.Rate).Aggregate((current, next) => current * next);
 
-            foreach (var f in fromRates)
+            var calculatedRate = new RateEntity
             {
-                rate = rates.FirstOrDefault(r => r.From.Equals(f.To) && r.To.Equals(toCurrency));
-                if (rate == null)
-                {
-                    continue;
-                }
+                From = rateDescription + " - " + toCurrency,
+                To = toCurrency,
+                Rate = rateValue
+            };
 
-                return new RateEntity
-                {
-                    From = $"{fromCurrency}-{rate.From}-{toCurrency}",
-                    To = toCurrency,
-                    Rate = f.Rate * rate.Rate
-                };
+            return calculatedRate;
+        }
+
+        private List<RateEntity> GetRateConversation(string fromCurrency, string toCurrency, IList<RateEntity> rates)
+        {
+            var ratesFrom = rates.Where(rate => rate.From == fromCurrency).ToList();
+            var ratesTo = rates.Where(rate => rate.To == toCurrency).ToList();
+
+            var ratesConversation = new List<RateEntity>();
+            if (ratesFrom.Any(rateFrom => ratesTo.Any(rateTo => rateFrom.To == rateTo.From)))
+            {
+                ratesConversation.Add(ratesFrom.First(x => ratesTo.Any(y => x.To == y.From)));
+                ratesConversation.Add(ratesTo.First(x => ratesFrom.Any(y => x.From == y.To)));
+            }
+            else
+            {
+                var secondRate = rates.First(x => ratesFrom.Any(y => x.From.Equals(y.To)) &&
+                                                    ratesTo.Any(y => x.To.Equals(y.From)));
+
+                var firstRate = rates.First(rate => rate.From == fromCurrency && 
+                                                    rate.To == secondRate.From);
+
+                var thirdRate = rates.First(rate => rate.From == secondRate.To && 
+                                                    rate.To == toCurrency);
+                ratesConversation.Add(firstRate);
+                ratesConversation.Add(secondRate);
+                ratesConversation.Add(thirdRate);
             }
 
-            return rate;
+            return ratesConversation;
+            
         }
     }
 }

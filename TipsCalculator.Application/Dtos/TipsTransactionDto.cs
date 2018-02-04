@@ -1,8 +1,7 @@
-﻿namespace TipsCalculator.Entities
+﻿namespace TipsCalculator.Application.Dtos
 {
-    public class TipsTransaction
+    public class TipsTransactionDto
     {
-            
         public string Sku { get; set; }
 
         public decimal Amount { get; set; }

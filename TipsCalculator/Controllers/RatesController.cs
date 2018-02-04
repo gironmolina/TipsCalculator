@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Http;
+using TipsCalculator.Application.Interfaces;
 
 namespace TipsCalculator.API.Controllers
 {
-    public class RatesController
+    public class RatesController : ApiController
     {
         private readonly IRatesAppService ratesAppService;
 
@@ -22,7 +20,7 @@ namespace TipsCalculator.API.Controllers
         {
             try
             {
-                var response = await this.tipsAppService.GetTipsCalculatorAdapter().ConfigureAwait(false);
+                var response = await this.ratesAppService.GetRatesAdapter().ConfigureAwait(false);
                 return this.Ok(response);
             }
             catch (Exception e)
@@ -30,6 +28,5 @@ namespace TipsCalculator.API.Controllers
                 return this.InternalServerError(e);
             }
         }
-    
     }
 }

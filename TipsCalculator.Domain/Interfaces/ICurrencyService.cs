@@ -8,6 +8,6 @@ namespace TipsCalculator.Domain.Interfaces
     {
         TransactionEntity Convert(string currency, TransactionEntity transaction, IList<RateEntity> rates);
 
-        IEnumerable<TransactionEntity> Convert(string currency, IEnumerable<TransactionEntity> transactions, IList<RateEntity> rates);
+        IList<TransactionEntity> Convert(string currency, IEnumerable<TransactionEntity> transactions, IList<RateEntity> rates);
     }
 }

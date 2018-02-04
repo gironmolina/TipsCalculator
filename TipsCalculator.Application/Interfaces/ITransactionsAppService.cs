@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using TipsCalculator.Application.Dtos;
 
 namespace TipsCalculator.Application.Interfaces
 {
-    class ITransactionsAppService
+    public interface ITransactionsAppService
     {
+        Task<IList<TransactionDto>> GetTransactionAdapter();
     }
 }

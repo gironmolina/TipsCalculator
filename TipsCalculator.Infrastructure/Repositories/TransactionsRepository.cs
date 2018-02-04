@@ -18,7 +18,6 @@ namespace TipsCalculator.Infrastructure.Repositories
             this.appConfigSettings = appConfigSettings ?? throw new ArgumentNullException(nameof(appConfigSettings));
         }
 
-
         public async Task<IList<TransactionEntity>> GetTransactions()
         {
             var transactions = await HttpClientHelpers.GetAsync<IList<TransactionEntity>>(appConfigSettings.TransactionApiUrl)
@@ -28,10 +27,11 @@ namespace TipsCalculator.Infrastructure.Repositories
 
         public async Task<IList<TransactionEntity>> GetTransactionsBySku(string sku)
         {
-            var transactions = await GetTransactions();
+            var transactions = await GetTransactions().ConfigureAwait(false);
 
-            var asd = transactions.First().Sku;
-            var transactionsBySku = transactions.Where(t => t.Sku == asd).ToList();
+            // TODO QUITAR ESTO
+            var test = transactions.First().Sku;
+            var transactionsBySku = transactions.Where(t => t.Sku == test).ToList();
 
             //var transactionsBySku = transactions.Where(t => t.Sku == sku).ToList();
             return transactionsBySku;

@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
-using TipsCalculator.CrossCutting.Enums;
+using TipsCalculator.Entities;
 
 namespace TipsCalculator.Domain.Interfaces
 {
     public interface ITipsService
     {
-        Task<dynamic> GetTipsOrder(string sku, string currency);
+        Task<TipsOrderEntity> GetTipsOrder(string sku, string currency);
     }
 }

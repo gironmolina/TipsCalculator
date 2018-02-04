@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using TipsCalculator.Entities;
 
 namespace TipsCalculator.Domain.Interfaces
 {
-    class ITransactionsService
+    public interface ITransactionsService
     {
+        Task<IList<TransactionEntity>> GetTransactions();
     }
 }
