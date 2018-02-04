@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Description;
 using log4net;
+using TipsCalculator.Application.Dtos;
 using TipsCalculator.Application.Interfaces;
 
 namespace TipsCalculator.API.Controllers
@@ -17,8 +20,12 @@ namespace TipsCalculator.API.Controllers
             this.ratesAppService = ratesAppService ?? throw new ArgumentNullException(nameof(ratesAppService));
         }
 
+        /// <summary>Get rates.</summary>>
+        /// <response code="200">Returns rates.</response>
+        /// <response code="500">Server found an unexpected error.</response>
         [HttpGet]
         [Route("api/v1/rates")]
+        [ResponseType(typeof(IList<RateDto>))]
         public async Task<IHttpActionResult> GetRates()
         {
             try
