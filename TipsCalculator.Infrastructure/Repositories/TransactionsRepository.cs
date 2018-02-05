@@ -30,10 +30,10 @@ namespace TipsCalculator.Infrastructure.Repositories
             var transactions = await GetTransactions().ConfigureAwait(false);
 
             // TODO QUITAR ESTO
-            var test = transactions.First().Sku;
-            var transactionsBySku = transactions.Where(t => t.Sku == test).ToList();
+            //var test = transactions.First().Sku;
+            //var transactionsBySku = transactions.Where(t => t.Sku == test).ToList();
 
-            //var transactionsBySku = transactions.Where(t => t.Sku == sku).ToList();
+            var transactionsBySku = transactions.Where(t => t.Sku == sku).ToList();
             return transactionsBySku;
         }
     }
