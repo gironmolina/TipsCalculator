@@ -116,6 +116,7 @@
     <Compile Include="Controllers\RatesController.cs" />
     <Compile Include="Controllers\TipsCalculatorController.cs" />
     <Compile Include="Controllers\TransactionsController.cs" />
+    <Compile Include="Filter\CacheFilter.cs" />
     <Compile Include="Filter\CheckModelForNullAttribute.cs" />
     <Compile Include="Filter\ValidateModelStateAttribute.cs" />
     <Compile Include="Global.asax.cs">
