@@ -5,6 +5,7 @@ using System.Web.Http.Description;
 using log4net;
 using TipsCalculator.Application.Dtos;
 using TipsCalculator.Application.Interfaces;
+using TipsCalculator.CrossCutting.Exceptions;
 
 namespace TipsCalculator.API.Controllers
 {
@@ -20,6 +21,7 @@ namespace TipsCalculator.API.Controllers
 
         /// <summary>Get Tips Order.</summary>>
         /// <response code="200">Returns tips order.</response>
+        /// <response code="400">API Bad request.</response>
         /// <response code="500">Server found an unexpected error.</response>
         [HttpGet]
         [Route("api/v1/tips")]
@@ -34,6 +36,11 @@ namespace TipsCalculator.API.Controllers
             catch (Exception e)
             {
                 Logger.Error(e.Message, e);
+                if (e is RateConvertException)
+                {
+                    return this.BadRequest();
+                }
+
                 return this.InternalServerError(e);
             }
         }

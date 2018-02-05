@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using TipsCalculator.CrossCutting.Exceptions;
 using TipsCalculator.Domain.Interfaces;
 using TipsCalculator.Entities;
 
@@ -12,7 +14,7 @@ namespace TipsCalculator.Domain.Services
             return transactions.Select(transaction => Convert(currency, transaction, rates)).ToList();
         }
 
-        public TransactionEntity Convert(string currency, TransactionEntity transaction, IList<RateEntity> rates)
+        private TransactionEntity Convert(string currency, TransactionEntity transaction, IList<RateEntity> rates)
         {
             if (transaction.Currency.Equals(currency))
             {
@@ -56,32 +58,38 @@ namespace TipsCalculator.Domain.Services
 
         private List<RateEntity> GetRateConversation(string fromCurrency, string toCurrency, IList<RateEntity> rates)
         {
-            var ratesFrom = rates.Where(rate => rate.From == fromCurrency).ToList();
-            var ratesTo = rates.Where(rate => rate.To == toCurrency).ToList();
-
-            var ratesConversation = new List<RateEntity>();
-            if (ratesFrom.Any(rateFrom => ratesTo.Any(rateTo => rateFrom.To == rateTo.From)))
+            try
             {
-                ratesConversation.Add(ratesFrom.First(x => ratesTo.Any(y => x.To == y.From)));
-                ratesConversation.Add(ratesTo.First(x => ratesFrom.Any(y => x.From == y.To)));
+                var ratesFrom = rates.Where(rate => rate.From == fromCurrency).ToList();
+                var ratesTo = rates.Where(rate => rate.To == toCurrency).ToList();
+
+                var ratesConversation = new List<RateEntity>();
+                if (ratesFrom.Any(rateFrom => ratesTo.Any(rateTo => rateFrom.To == rateTo.From)))
+                {
+                    ratesConversation.Add(ratesFrom.First(x => ratesTo.Any(y => x.To == y.From)));
+                    ratesConversation.Add(ratesTo.First(x => ratesFrom.Any(y => x.From == y.To)));
+                }
+                else
+                {
+                    var secondRate = rates.First(x => ratesFrom.Any(y => x.From.Equals(y.To)) &&
+                                                      ratesTo.Any(y => x.To.Equals(y.From)));
+
+                    var firstRate = rates.First(rate => rate.From == fromCurrency &&
+                                                        rate.To == secondRate.From);
+
+                    var thirdRate = rates.First(rate => rate.From == secondRate.To &&
+                                                        rate.To == toCurrency);
+                    ratesConversation.Add(firstRate);
+                    ratesConversation.Add(secondRate);
+                    ratesConversation.Add(thirdRate);
+                }
+
+                return ratesConversation;
             }
-            else
+            catch (Exception e)
             {
-                var secondRate = rates.First(x => ratesFrom.Any(y => x.From.Equals(y.To)) &&
-                                                    ratesTo.Any(y => x.To.Equals(y.From)));
-
-                var firstRate = rates.First(rate => rate.From == fromCurrency && 
-                                                    rate.To == secondRate.From);
-
-                var thirdRate = rates.First(rate => rate.From == secondRate.To && 
-                                                    rate.To == toCurrency);
-                ratesConversation.Add(firstRate);
-                ratesConversation.Add(secondRate);
-                ratesConversation.Add(thirdRate);
+                throw new RateConvertException(e.Message, e);
             }
-
-            return ratesConversation;
-            
         }
     }
 }
