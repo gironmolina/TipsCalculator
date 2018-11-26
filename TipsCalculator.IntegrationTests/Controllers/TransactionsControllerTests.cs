@@ -21,13 +21,11 @@ namespace TipsCalculator.IntegrationTests.Controllers
             // Act
             var response = await controller.GetTransactions().ConfigureAwait(false);
             var actualDto = (response as OkNegotiatedContentResult<IList<TransactionDto>>)?.Content;
-
             var isSuccessStatusCode = response.ExecuteAsync(new CancellationToken()).Result.IsSuccessStatusCode;
-            var isValidType = actualDto is IList<TransactionDto>;
 
             // Assert
             Assert.IsTrue(isSuccessStatusCode);
-            Assert.IsTrue(isValidType);
+            Assert.IsNotNull(actualDto);
         }
     }
 }

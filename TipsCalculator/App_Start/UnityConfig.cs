@@ -17,18 +17,18 @@ namespace TipsCalculator
     public static class UnityConfig
     {
         private static Lazy<IUnityContainer> container =
-          new Lazy<IUnityContainer>(() =>
-          {
-              var container = new UnityContainer();
-              RegisterTypes(container);
-              return container;
-          });
+            new Lazy<IUnityContainer>(() =>
+            {
+                var container = new UnityContainer();
+                RegisterTypes(container);
+                return container;
+            });
 
         /// <summary>
         /// Configured Unity Container.
         /// </summary>
         public static IUnityContainer Container => container.Value;
-        
+
         public static void RegisterTypes(IUnityContainer container)
         {
             // Application Services

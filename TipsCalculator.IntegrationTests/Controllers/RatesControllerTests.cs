@@ -22,11 +22,10 @@ namespace TipsCalculator.IntegrationTests.Controllers
             var response = await controller.GetRates().ConfigureAwait(false);
             var actualDto = (response as OkNegotiatedContentResult<IList<RateDto>>)?.Content;
             var isSuccessStatusCode = response.ExecuteAsync(new CancellationToken()).Result.IsSuccessStatusCode;
-            var isValidType = actualDto is IList<RateDto>;
 
             // Assert
             Assert.IsTrue(isSuccessStatusCode);
-            Assert.IsTrue(isValidType);
+            Assert.IsNotNull(actualDto);
             Assert.AreEqual(actualDto?.Count, 6);
         }
     }
